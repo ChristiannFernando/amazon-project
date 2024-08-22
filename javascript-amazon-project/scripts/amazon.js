@@ -1,4 +1,4 @@
-
+import {cart} from '../data/cart.js';
 
 let productshtml = ''
 
@@ -27,7 +27,7 @@ products.forEach((product) =>{
           </div>
 
           <div class="product-quantity-container">
-            <select>
+            <select class="product-quantity-${product.id}">
               <option selected value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -43,7 +43,7 @@ products.forEach((product) =>{
 
           <div class="product-spacer"></div>
 
-          <div class="added-to-cart">
+          <div class="added-to-cart added-to-cart-${product.id}">
             <img src="images/icons/checkmark.png">
             Added
           </div>
@@ -65,21 +65,46 @@ const buttonCart = document.querySelectorAll(".js-add-cart")
      const productId = button.dataset.productId;
      let mathItem;
 
+     let quantityJs = document.querySelector(`.product-quantity-${productId}`);
+     let selector = Number(quantityJs.value)
+     
      cart.forEach((item) => {
       if(productId === item.productId){
         mathItem = item
       }
      })
      if(mathItem){
-      mathItem.quantity += 1
+      mathItem.quantity +=  selector;
     }else{
       cart.push({
         productId: productId,
-        quantity: 1
+        quantity:  selector
        });
     }
 
+    let totalQuantity = 0
+    cart.forEach((item) =>{
+      totalQuantity += item.quantity
+    })
+   
+    let cartQuantity = document.querySelector(".cart-quantity")
+    .innerHTML= `${totalQuantity}`
+
+    const addedMessage = document.querySelector(`.added-to-cart-${productId}`)
+    addedMessage.classList.add('addedMessage')
      
      console.log(cart )
+
+     //setTimeout(() =>{
+     // addedMessage.classList.remove('addedMessage')
+    // },2000)
+    let timeoutId
+
+    if(timeoutId){
+      clearTimeout(timeoutId)
+    }
+
+    let time = setTimeout(() => {addedMessage.classList.remove('addedMessage')},2000)
+    timeoutId = time
    })
 })
