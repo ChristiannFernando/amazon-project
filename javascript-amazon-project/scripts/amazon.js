@@ -1,4 +1,5 @@
-import {cart} from '../data/cart.js';
+import {cart, addtoCart} from '../data/cart.js';
+import {products} from '../data/products.js'
 
 let productshtml = ''
 
@@ -59,41 +60,34 @@ products.forEach((product) =>{
 document.querySelector(".js-products-grid").
 innerHTML = productshtml;
 
-const buttonCart = document.querySelectorAll(".js-add-cart")
-.forEach((button) =>{
-   button.addEventListener('click',() =>{
-     const productId = button.dataset.productId;
-     let mathItem;
 
-     let quantityJs = document.querySelector(`.product-quantity-${productId}`);
-     let selector = Number(quantityJs.value)
-     
-     cart.forEach((item) => {
-      if(productId === item.productId){
-        mathItem = item
-      }
-     })
-     if(mathItem){
-      mathItem.quantity +=  selector;
-    }else{
-      cart.push({
-        productId: productId,
-        quantity:  selector
-       });
-    }
 
-    let totalQuantity = 0
+
+
+function quantityCart(){
+  let totalQuantity = 0
     cart.forEach((item) =>{
       totalQuantity += item.quantity
     })
    
     let cartQuantity = document.querySelector(".cart-quantity")
     .innerHTML= `${totalQuantity}`
+}
+
+
+const buttonCart = document.querySelectorAll(".js-add-cart")
+.forEach((button) =>{
+   button.addEventListener('click',() =>{
+     const productId = button.dataset.productId;
+     
+     addtoCart(productId)
+
+     quantityCart()
 
     const addedMessage = document.querySelector(`.added-to-cart-${productId}`)
     addedMessage.classList.add('addedMessage')
      
-     console.log(cart )
+     
 
      //setTimeout(() =>{
      // addedMessage.classList.remove('addedMessage')
