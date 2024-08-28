@@ -31,3 +31,16 @@ export function addtoCart(productId){
 
    console.log(cart )
 }
+
+export function removeFromCart(productId){
+   let newCart = []
+   
+   cart.forEach((cartItem) => {
+    if(productId !== cartItem.productId){
+      newCart.push(cartItem)
+    }
+   })
+  
+   cart = newCart
+ 
+}
